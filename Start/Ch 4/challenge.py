@@ -5,16 +5,52 @@
 # The subclasses are required to override the magic method
 # that makes them sortable
 
+from dataclasses import dataclass
+
+@dataclass
 class Asset():
-    pass
+    price: float
+
+    def __call__(self) -> None:
+         raise TypeError("Cannot instantiate Asset class directly")
     
+    def __eq__(self, value: object) -> bool:
+       if not isinstance(value, Asset):
+           return NotImplemented
+       return self.price == value.price
+    def __lt__(self, value: object) -> bool:
+       if not isinstance(value, Asset):
+           return NotImplemented
+       return self.price < value.price
+    def __ne__(self, value: object) -> bool:
+       if not isinstance(value, Asset):
+           return NotImplemented
+       return self.price != value.price
+    def __le__(self, value: object) -> bool:
+       if not isinstance(value, Asset):
+           return NotImplemented
+       return self.price <= value.price
+    def __gt__(self, value: object) -> bool:
+       if not isinstance(value, Asset):
+           return NotImplemented
+       return self.price > value.price
+    def __ge__(self, value: object) -> bool:
+       if not isinstance(value, Asset):
+           return NotImplemented
+       return self.price >= value.price
 
+@dataclass(eq=False)
 class Stock(Asset):
-    pass
+    ticker: str
+    company: str
 
 
+@dataclass(eq=False)
 class Bond(Asset):
-    pass
+    description: str
+    duration: int
+    interest: float
+
 
 # ~~~~~~~~~ TEST CODE ~~~~~~~~~
 stocks = [
@@ -44,3 +80,22 @@ for stock in stocks:
 print("-----------")
 for bond in bonds:
    print(bond)
+
+ticker = "ABCD"
+price = 200.00
+description = "ABCD Corporation"
+
+bondname = "30 Year US Treasury"
+bondprice = 100.00
+duration = 30
+interest = 4.38
+
+# ******* DO NOT CHANGE THIS CODE ********
+stock = Stock(price, ticker, description)
+bond = Bond(bondprice, bondname, duration, interest)
+
+is_eq = (stock == bond)
+is_gt = (stock > bond)
+is_lt = (stock < bond)
+is_gte = (stock >= bond)
+is_lte = (stock <= bond)

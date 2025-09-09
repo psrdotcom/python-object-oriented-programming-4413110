@@ -22,7 +22,38 @@ class Stock(Asset):
         super().__init__(price)
         self.company = company
         self.ticker = ticker
+    def __str__(self):
+        return f"{self.ticker} ({self.company}): {self.price}"
+    
+    def __lt__(self, other):
+        if not isinstance(other, Stock):
+            return ValueError("Cannot compare Stock with non-Stock type")
+        return self.price < other.price
 
+    def __eq__(self, other):
+        if not isinstance(other, Stock):
+            return ValueError("Cannot compare Stock with non-Stock type")
+        return self.price == other.price
+    
+    def __le__(self, other):
+        if not isinstance(other, Stock):
+            return ValueError("Cannot compare Stock with non-Stock type")
+        return self.price <= other.price
+    
+    def __gt__(self, other):
+        if not isinstance(other, Stock):
+            return ValueError("Cannot compare Stock with non-Stock type")
+        return self.price > other.price
+    
+    def __ge__(self, other):
+        if not isinstance(other, Stock):
+            return ValueError("Cannot compare Stock with non-Stock type")
+        return self.price >= other.price
+    
+    def __ne__(self, other):
+        if not isinstance(other, Stock):
+            return ValueError("Cannot compare Stock with non-Stock type")
+        return self.price != other.price
 
 class Bond(Asset):
     def __init__(self, price, description, duration, yieldamt):
@@ -31,6 +62,8 @@ class Bond(Asset):
         self.duration = duration
         self.yieldamt = yieldamt
 
+    def __str__(self):
+        return f"{self.description} ({self.duration} yr): {self.yieldamt}%"
 
 # ~~~~~~~~~ TEST CODE ~~~~~~~~~
 stocks = [
@@ -47,8 +80,8 @@ bonds = [
     Bond(99.57, "2 Year US Treasury", 2, 4.98)
 ]
 
-stocks.sort()
-bonds.sort()
+stocks.sort(key=lambda x: x.price)
+bonds.sort(key=lambda x: x.yieldamt)
 
 for stock in stocks:
     print(stock)
